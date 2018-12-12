@@ -10,7 +10,7 @@ class BookNoteInline(admin.StackedInline):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ["title", "authors"]
+    list_display = ["title", "author_string"]
     inlines = [BookNoteInline]
 
 

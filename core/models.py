@@ -3,13 +3,35 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    users_followed = models.ManyToManyField(
+        to="User",
+        through="Follow",
+        through_fields=("following_user", "followed_user"),
+        related_name="followers",
+    )
+
+
+class Follow(models.Model):
+    following_user = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name="follows_from"
+    )
+    followed_user = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name="follows_to"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, null=False)
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Book(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="books")
     title = models.CharField(max_length=255)
-    authors = models.CharField(max_length=255, null=True, blank=True)
+    authors = models.ManyToManyField(Author, related_name="books")
     status = models.CharField(
         max_length=20,
         choices=(
@@ -20,6 +42,9 @@ class Book(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def author_string(self):
+        return ", ".join(str(a) for a in self.authors.all())
 
     def __str__(self):
         return self.title
