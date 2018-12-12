@@ -18,7 +18,7 @@ class Follow(models.Model):
     followed_user = models.ForeignKey(
         to=User, on_delete=models.CASCADE, related_name="follows_to"
     )
-    created_at = models.DateTimeField(auto_now_add=True, null=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
 
 class Author(models.Model):
