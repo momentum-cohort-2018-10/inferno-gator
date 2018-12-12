@@ -4,12 +4,18 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+prospector = "*"
+black = "*"
 
 [packages]
 django = "*"
 psycopg2 = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

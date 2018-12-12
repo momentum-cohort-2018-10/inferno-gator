@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    # Third-party apps
+    "django_extensions",
+    "rest_framework",
     # My apps
-    'core',
+    "core",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -77,12 +80,12 @@ WSGI_APPLICATION = "infernogator.wsgi.application"
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'infernogator',
-        'USER': 'infernogator',        
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "infernogator",
+        "USER": "infernogator",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
