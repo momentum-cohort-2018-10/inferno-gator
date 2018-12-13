@@ -19,5 +19,19 @@ from api import views as api_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/books/", api_views.book_create_or_list, name="api_book_list"),
+    path("api/books/", api_views.BookListCreateView.as_view(), name="api_book_list"),
+    path(
+        "api/books/<int:id>/",
+        api_views.BookRetrieveUpdateDestroyView.as_view(),
+        name="api_book",
+    ),
+    path("api/users/", api_views.UserListView.as_view(), name="api_user_list"),
+    path(
+        "api/follows/", api_views.FollowListCreateView.as_view(), name="api_follow_list"
+    ),
+    path(
+        "api/follows/<str:username>/",
+        api_views.FollowDestroyView.as_view(),
+        name="api_follow",
+    ),
 ]
