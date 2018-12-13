@@ -7,6 +7,7 @@ verify_ssl = true
 prospector = "*"
 black = "*"
 ipython = "*"
+yapf = "*"
 
 [packages]
 django = "*"

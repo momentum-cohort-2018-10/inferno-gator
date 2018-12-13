@@ -1,8 +1,8 @@
-from core.models import Book, Follow, User
-from api.serializers import BookSerializer, FollowSerializer, UserSerializer
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from core.models import Follow, User, Book, BookNote
+from api.serializers import BookSerializer, FollowSerializer, UserSerializer, BookNoteSerializer
+# from rest_framework.views import APIView
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 
 
 class BookListCreateView(generics.ListCreateAPIView):
@@ -17,10 +17,17 @@ class BookListCreateView(generics.ListCreateAPIView):
 
 class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
-    lookup_field = "id"
 
     def get_queryset(self):
         return self.request.user.books
+
+
+class BookNotesCreateView(generics.CreateAPIView):
+    serializer_class = BookNoteSerializer
+
+    def perform_create(self, serializer):
+        book = get_object_or_404(Book, pk=self.kwargs['book_pk'])
+        serializer.save(book=book)
 
 
 class UserListView(generics.ListAPIView):

@@ -5,7 +5,8 @@ from core.models import Book, BookNote, User, Author, Follow
 class CreatableSlugRelatedField(serializers.SlugRelatedField):
     def to_internal_value(self, data):
         try:
-            value, _ = self.get_queryset().get_or_create(**{self.slug_field: data})
+            value, _ = self.get_queryset().get_or_create(
+                **{self.slug_field: data})
             return value
         except (TypeError, ValueError):
             self.fail("invalid")
@@ -25,12 +26,12 @@ class BookNoteSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="api_book", lookup_field="id")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="book-detail", lookup_field="pk")
     notes = BookNoteSerializer(many=True, required=False)
     owner = serializers.SlugRelatedField(slug_field="username", read_only=True)
     authors = CreatableSlugRelatedField(
-        slug_field="name", many=True, queryset=Author.objects.all()
-    )
+        slug_field="name", many=True, queryset=Author.objects.all())
 
     class Meta:
         model = Book
@@ -40,14 +41,13 @@ class BookSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("username",)
+        fields = ("username", )
 
 
 class FollowSerializer(serializers.ModelSerializer):
     followed_user = serializers.SlugRelatedField(
-        slug_field="username", queryset=User.objects.all()
-    )
+        slug_field="username", queryset=User.objects.all())
 
     class Meta:
         model = Follow
-        fields = ("followed_user",)
+        fields = ("followed_user", )
