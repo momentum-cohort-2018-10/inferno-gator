@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<script>
+const books = {{ books_json|safe }}
+</script>
+
+<script src="{% static 'js/app.js' %}" defer></script>
+{% endblock %}
+
+{% block main %}
+<header>
+  <section class="section has-background-black">
+    <h1 class="title is-size-2 has-text-warning">InfernoGator</h1>
+  </section>
+  <nav class="tabs">
+    <ul>
+      <li class="{% if status == 'to_read' %}is-active{% endif %}">
+        <a href="{% url 'books-to-read' %}">To Read</a>
+      </li>
+      <li class="{% if status == 'reading' %}is-active{% endif %}">
+        <a href="{% url 'books-reading' %}">Reading</a>
+      </li>
+      <li class="{% if status == 'read' %}is-active{% endif %}">
+        <a href="{% url 'books-read' %}">Read</a>
+      </li>      
+    </ul>
+  </nav>
+</header>
+
+<main class="section">
+  <div class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <p>
+          Sort by: <a href="#">Title</a> | <a href="#" class="fw6 black no-underline">Date Added (Oldest First)</a>
+          | <a href="#">Date Added (Newest First)</a>
+        </p>
+      </div>
+    </div>
+    <div class="level-right">
+      <div class="level-item">
+        <div class="buttons">
+          <button class="button is-link">Add Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="book-list">
+
+  </div>
+</main>
+{% endblock %}

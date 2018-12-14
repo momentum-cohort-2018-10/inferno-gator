@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block main %}
+<script src="{% static 'js/app.js' %}" defer></script>
+<h2>Books</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Authors</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+      <tr id="book-{{book.pk}}" class="book-row" data-book-pk="{{ book.pk }}" data-book-status="{{ book.status }}">
+        <td>{{ book.title }}</td>
+        <td>{{ book.author_string }}</td>
+        <td id="book-status-{{ book.pk }}">{{ book.get_status_display }}</td>
+        <td>
+          <!-- <button class="update-book-status" data-book-pk="{{ book.pk }}" data-new-status="want_to_read">Mark as want to read</button>         -->
+          <button class="update-book-status" data-show-on-status="want_to_read" data-book-pk="{{ book.pk }}" data-new-status="reading">Mark as reading</button>        
+          <button class="update-book-status" data-show-on-status="reading" data-book-pk="{{ book.pk }}" data-new-status="read">Mark as read</button>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -26,16 +26,16 @@ class BookNoteSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(
-        view_name="book-detail", lookup_field="pk")
     notes = BookNoteSerializer(many=True, required=False)
     owner = serializers.SlugRelatedField(slug_field="username", read_only=True)
     authors = CreatableSlugRelatedField(
         slug_field="name", many=True, queryset=Author.objects.all())
+    status_text = serializers.CharField(source='get_status_display')
 
     class Meta:
         model = Book
-        fields = ("id", "url", "title", "authors", "status", "owner", "notes")
+        fields = ("id", "title", "authors", "author_string", "status",
+                  'status_text', "owner", "notes")
 
 
 class UserSerializer(serializers.ModelSerializer):
