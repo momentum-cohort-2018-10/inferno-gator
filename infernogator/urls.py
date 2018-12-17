@@ -20,19 +20,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
     path("", core_views.index),
-    path(
-        "to-read/",
-        core_views.index,
-        kwargs={"status": "to_read"},
-        name="books-to-read"),
-    path(
-        "reading/",
-        core_views.index,
-        kwargs={"status": "reading"},
-        name="books-reading"),
-    path(
-        "read/",
-        core_views.index,
-        kwargs={"status": "read"},
-        name="books-read"),
 ]

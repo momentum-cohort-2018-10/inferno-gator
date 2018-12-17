@@ -30,7 +30,8 @@ class BookSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(slug_field="username", read_only=True)
     authors = CreatableSlugRelatedField(
         slug_field="name", many=True, queryset=Author.objects.all())
-    status_text = serializers.CharField(source='get_status_display')
+    status_text = serializers.CharField(
+        source='get_status_display', required=False)
 
     class Meta:
         model = Book

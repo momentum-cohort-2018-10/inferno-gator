@@ -2,10 +2,6 @@
 {% load staticfiles %}
 
 {% block head %}
-<script>
-const books = {{ books_json|safe }}
-</script>
-
 <script src="{% static 'js/app.js' %}" defer></script>
 {% endblock %}
 
@@ -16,14 +12,14 @@ const books = {{ books_json|safe }}
   </section>
   <nav class="tabs">
     <ul>
-      <li class="{% if status == 'to_read' %}is-active{% endif %}">
-        <a href="{% url 'books-to-read' %}">To Read</a>
+      <li data-tab-status='want_to_read'>
+        <a href="#">To Read</a>
       </li>
-      <li class="{% if status == 'reading' %}is-active{% endif %}">
-        <a href="{% url 'books-reading' %}">Reading</a>
+      <li data-tab-status='reading'>
+        <a href="#">Reading</a>
       </li>
-      <li class="{% if status == 'read' %}is-active{% endif %}">
-        <a href="{% url 'books-read' %}">Read</a>
+      <li data-tab-status='read'>
+        <a href="#">Read</a>
       </li>      
     </ul>
   </nav>
@@ -34,23 +30,74 @@ const books = {{ books_json|safe }}
     <div class="level-left">
       <div class="level-item">
         <p>
-          Sort by: <a href="#">Title</a> | <a href="#" class="fw6 black no-underline">Date Added (Oldest First)</a>
-          | <a href="#">Date Added (Newest First)</a>
+          {% comment %} Sort by: <a href="#">Title</a> | <a href="#" class="fw6 black no-underline">Date Added (Oldest First)</a>
+          | <a href="#">Date Added (Newest First)</a> {% endcomment %}
         </p>
       </div>
     </div>
     <div class="level-right">
       <div class="level-item">
         <div class="buttons">
-          <button class="button is-link">Add Book</button>
+          <button id="add-book-button" class="button is-link">Add Book</button>
         </div>
       </div>
     </div>
   </div>
 
-
-  <div id="book-list">
+  <div id="book-list-want_to_read" class="book-list">
 
   </div>
+
+  <div id="book-list-reading" class="book-list">
+
+  </div>
+
+  <div id="book-list-read" class="book-list">
+
+  </div>
+
+  <div id="add-book-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+      <form id="new-book-form">
+        <div class="field">
+          <label class="label" for="new-book-title">Title</label>
+          <div class="control">
+            <input class="input" type="text" id="new-book-title" name="title">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="new-book-authors">Authors</label>
+          <div class="control">
+            <input class="input" type="text" id="new-book-authors" name="authors">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="new-book-status">List</label>
+          <div class="control">
+            <div class="select">
+              <select id="new-book-status" name="status">
+                <option value="want_to_read">To read</option>
+                <option value="reading">Reading</option>
+                <option value="read">Read</option>                
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="new-book-submit" class="button is-link">Submit</button>
+          </div>
+          <div class="control">
+            <button id="new-book-cancel" class="button is-text">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+  </div>
+
 </main>
 {% endblock %}
