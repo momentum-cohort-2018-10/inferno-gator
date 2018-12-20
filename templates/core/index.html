@@ -1,14 +1,16 @@
 {% extends "base.html" %}
+{% load account %}
 {% load staticfiles %}
 
 {% block head %}
 <script src="{% static 'js/app.js' %}" defer></script>
 {% endblock %}
 
-{% block main %}
+{% block content %}
 <header>
   <section class="section has-background-black">
     <h1 class="title is-size-2 has-text-warning">InfernoGator</h1>
+    <p class="has-text-warning">Logged in as {% user_display user %}</p>
   </section>
   <nav class="tabs">
     <ul>

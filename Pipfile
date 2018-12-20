@@ -15,6 +15,7 @@ psycopg2 = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
 djangorestframework = "*"
+django-allauth = "*"
 
 [requires]
 python_version = "3.7"
