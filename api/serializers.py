@@ -36,7 +36,7 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
     status_text = serializers.CharField(
         source='get_status_display', read_only=True)
     owner = UserSerializer(read_only=True)
-    authors = NestedAuthorSerializer(many=True)
+    authors = NestedAuthorSerializer(many=True, required=False)
 
     class Meta:
         model = Book
@@ -45,7 +45,9 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         authors = validated_data.pop('authors')
+
         book = Book.objects.create(**validated_data)
+
         for author_data in authors:
             if author_data.get('id'):
                 author = Author.objects.get(id=author_data['id'])

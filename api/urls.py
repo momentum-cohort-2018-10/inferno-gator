@@ -2,7 +2,14 @@ from django.urls import path
 from api import views as api_views
 
 urlpatterns = [
-    path("books/", api_views.BookListCreateView.as_view(), name="book-list"),
+    path(
+        "users/<str:username>/books/",
+        api_views.BookListCreateView.as_view(),
+        name="user-book-list"),
+    path(
+        "mine/books/",
+        api_views.BookListCreateView.as_view(),
+        name="book-list"),
     path(
         "books/<int:pk>/",
         api_views.BookRetrieveUpdateDestroyView.as_view(),

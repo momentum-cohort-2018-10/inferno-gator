@@ -1,15 +1,22 @@
 from core.models import Follow, User, Book, BookNote, Author
 from api.serializers import BookSerializer, BookWithNotesSerializer, FollowSerializer, UserSerializer, BookNoteSerializer, AuthorSerializer
 # from rest_framework.views import APIView
+from rest_framework.views import Response
 from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
 
-class BookListCreateView(generics.ListCreateAPIView):
+class BookListCreateView(generics.ListAPIView):
     serializer_class = BookSerializer
 
     def get_queryset(self):
-        return self.request.user.books
+        if self.kwargs.get('username'):
+            username = self.kwargs['username']
+            user = get_object_or_404(User, username=username)
+            return user.books.all()
+
+        return self.request.user.books.all()
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -17,9 +24,13 @@ class BookListCreateView(generics.ListCreateAPIView):
 
 class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookWithNotesSerializer
+    queryset = Book.objects.all()
 
-    def get_queryset(self):
-        return self.request.user.books
+    def check_object_permissions(self, request, book):
+        if request.method != "GET" and book.owner != request.user:
+            raise PermissionDenied("You are not the book's owner.")
+
+        return super().check_object_permissions(request, book)
 
 
 class BookNotesCreateView(generics.CreateAPIView):
